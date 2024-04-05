@@ -80,7 +80,7 @@ const createCourse = asyncHandler(async(req,res)=>{
     
       return res
         .status(201)
-        .json(new ApiResponse(200, cource, "Course Create Successfully"));
+        .json(new ApiResponse(200, course, "Course Create Successfully"));
 });
 
 const updateCourse = asyncHandler(async(req,res)=>{

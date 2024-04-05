@@ -6,6 +6,7 @@ import { ApiResponse } from "../utils/ApiResponse.js";
 import jwt from "jsonwebtoken";
 import mongoose from "mongoose";
 
+import sendMail from "../utils/emailService.js";
 const generateAccessAndRefereshTokens = async (userId) => {
   try {
     const user = await User.findById(userId);
@@ -23,6 +24,7 @@ const generateAccessAndRefereshTokens = async (userId) => {
     );
   }
 };
+
 
 const registerUser = asyncHandler(async (req, res) => {
   const { firstName, lastName, email, role, password } = req.body;
@@ -60,7 +62,12 @@ const registerUser = asyncHandler(async (req, res) => {
   if (!createdUser) {
     throw new ApiError(500, "Something went wrong while registering the user");
   }
-
+  console.log(email)
+  try {
+    await sendMail(email,"Registration", `Hello ${firstName} You are Register Successfully`);
+  } catch (error) {
+    console.error('Failed to send email:', error);
+  }
   return res
     .status(201)
     .json(new ApiResponse(200, createdUser, "User registered Successfully"));
@@ -269,6 +276,8 @@ const updateUserAvatar = asyncHandler(async (req, res) => {
     .status(200)
     .json({ Avatar, message: "Profile updated successfully" });
 });
+
+
 
 export {
   registerUser,

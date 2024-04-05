@@ -11,8 +11,8 @@ const enrollCourse = asyncHandler(async(req,res)=>{
     if (existingEnrollment) {
         throw new ApiError(400,'Course is already Enrolled')
     }
-    const newEnrollment = new Enrollment({ userId, courseId });
-    await newEnrollment.save();
+    const newEnrollment = await Enrollment.create({ userId, courseId });
+    // await newEnrollment.save();
 
     return res.status(201).json(new ApiResponse(200, newEnrollment,'Enroll Successfull'))
 });
